@@ -25,13 +25,13 @@ public class ArticleService {
 		return article;
 	}
 	
-	public List<Article> getForPrintArticles(int actorId, int boardId, int itemsCountInApage, int page) {
+	public List<Article> getForPrintArticles(int actorId, int boardId, String searchKeywordTypeCode, String searchKeyword, int itemsCountInApage, int page) {
 		int limitStart=(page-1) * itemsCountInApage;
 		int limitTake= itemsCountInApage;
 		
 		
 		
-		List<Article> articles = articleRepository.getForPrintArticles(boardId,limitStart,limitTake);
+		List<Article> articles = articleRepository.getForPrintArticles(boardId,limitStart,limitTake,searchKeywordTypeCode,searchKeyword);
 		
 		for ( Article article : articles ) {
 			updateForPrintData(actorId, article);
@@ -95,10 +95,10 @@ public class ArticleService {
 		return ResultData.from("S-1", "수정가능합니다.");
 	}
 
-	public int getArticlesCotunt(int boardId) {
+	public int getArticlesCotunt(int boardId, String searchKeywordTypeCode, String searchKeyword) {
 		
-		 
-		
-		return articleRepository.getArticlesCount(boardId);
+
+		return articleRepository.getArticlesCount(boardId,searchKeywordTypeCode,searchKeyword);
 	}
+
 }

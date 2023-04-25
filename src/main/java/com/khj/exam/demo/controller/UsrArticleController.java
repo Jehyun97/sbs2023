@@ -59,7 +59,9 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList( Model model, @RequestParam(defaultValue="1")int boardId, @RequestParam(defaultValue="1")int page) {
+	public String showList( Model model, @RequestParam(defaultValue="1")int boardId, @RequestParam(defaultValue="1")int page,
+			@RequestParam(defaultValue="title,body")String searchKeywordTypeCode,
+			@RequestParam(defaultValue="")String searchKeyword) {
 		Board board = boardService.getBoardById(boardId);
 		
 		
@@ -67,11 +69,11 @@ public class UsrArticleController {
 		if(board==null) {
 			return rq.historyBackJsOnview(Ut.f("%d게시물이 없습니다.",boardId));
 		}
-		int articlesCount=articleService.getArticlesCotunt(boardId);
+		int articlesCount=articleService.getArticlesCotunt(boardId,searchKeywordTypeCode,searchKeyword);
 		int itemsCountInApage=10;
 		int pagesCount = (int) Math.ceil((double)articlesCount/itemsCountInApage);
 		
-		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(),boardId,itemsCountInApage,page);
+		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(),boardId,searchKeywordTypeCode,searchKeyword,itemsCountInApage,page);
 		
 		model.addAttribute("board", board);
 		model.addAttribute("boardId",boardId);

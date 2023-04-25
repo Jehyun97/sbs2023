@@ -17,13 +17,31 @@
 		FROM article AS A
 		LEFT JOIN MEMBER1 AS M
 		ON A.memberId = M.id
-		<if test="boardId !=0 ">
-			WHERE A.boardId = #{boardId}
+			<if test="boardId !=0 ">
+				WHERE A.boardId = #{boardId}
+			</if>
+			<if test="searchKeyword !=''">
+		<choose>
+	   		<when test="searchKeywordTypeCode =='title'">
+	    	 AND A.title LIKE CONCAT('%',#{searchKeyword},'%')
+	    	</when>
+	   		<when test="searchKeywordTypeCode =='body'">
+	    	 AND A.body LIKE CONCAT('%',#{searchKeyword},'%')
+	    	</when>
+	    	<otherwise>
+	    		AND (
+	    			A.title LIKE CONCAT('%',#{searchKeyword},'%')
+	    			OR
+	    			A.body LIKE CONCAT('%',#{searchKeyword},'%')
+	    		    )
+	    	</otherwise>
+	 	 </choose>
 		</if>
 		ORDER BY id DESC
 		<if test="boardId != -1 ">
 			LIMIT #{limitStart},#{limitTake}
 		</if>
+		
 	</select>
 	
 	<select id="getForPrintArticle" resultType="Article">
@@ -45,7 +63,24 @@
 		<if test="boardId!=0">
 		WHERE A.boardId=#{boardId}
 		</if>
-
+	<if test="searchKeyword !=''">
+	<choose>
+   		<when test="searchKeywordTypeCode =='title'">
+    	 AND A.title LIKE CONCAT('%',#{searchKeyword},'%')
+    	</when>
+   		<when test="searchKeywordTypeCode =='body'">
+    	 AND A.body LIKE CONCAT('%',#{searchKeyword},'%')
+    	</when>
+    	<otherwise>
+    		AND (
+    			A.title LIKE CONCAT('%',#{searchKeyword},'%')
+    			OR
+    			A.body LIKE CONCAT('%',#{searchKeyword},'%')
+    		    )
+    	</otherwise>
+  </choose>
+	</if>
+	
 	</select>	
 	<delete id="deleteArticle">
 		DELETE
