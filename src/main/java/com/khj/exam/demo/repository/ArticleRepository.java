@@ -11,13 +11,16 @@ import com.khj.exam.demo.vo.Article;
 public interface ArticleRepository {
 	public Article getForPrintArticle(@Param("id") int id);
 	
-	public List<Article> getForPrintArticles(@Param("boardId")int boardId);
+	public List<Article> getForPrintArticles(@Param("boardId")int boardId, @Param("limitStart")int limitStart,@Param("limitTake") int limitTake);
 	
-	public void writeArticle(@Param("memberId") int memberId, @Param("title") String title, @Param("body") String body);
+	public void writeArticle(@Param("memberId") int memberId, @Param("title") String title, @Param("body") String body, @Param("boardId")int boardId);
 	
 	public void deleteArticle(@Param("id") int id);
 
 	public void modifyArticle(@Param("id") int id, @Param("title") String title, @Param("body") String body);
 
-	public int getLastInsertId();	
+	public int getLastInsertId();
+
+	public int getArticlesCount(@Param("boardId")int boardId);
+
 }

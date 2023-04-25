@@ -5,6 +5,7 @@
 		INSERT INTO article
 		SET regDate = NOW(),
 		updateDate = NOW(),
+		boardId=#{boardId},
 		memberId = #{memberId},
 		title = #{title},
 		`body` = #{body}
@@ -20,6 +21,9 @@
 			WHERE A.boardId = #{boardId}
 		</if>
 		ORDER BY id DESC
+		<if test="boardId != -1 ">
+			LIMIT #{limitStart},#{limitTake}
+		</if>
 	</select>
 	
 	<select id="getForPrintArticle" resultType="Article">
@@ -35,6 +39,14 @@
 		SELECT LAST_INSERT_ID()
 	</select>
 	
+	<select id="getArticlesCount" resultType="int">
+	SELECT COUNT(*) AS cnt
+	FROM article as A
+		<if test="boardId!=0">
+		WHERE A.boardId=#{boardId}
+		</if>
+
+	</select>	
 	<delete id="deleteArticle">
 		DELETE
 		FROM article

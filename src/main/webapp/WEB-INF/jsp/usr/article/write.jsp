@@ -13,6 +13,16 @@
         <col width="200"/>
       </colgroup>
         <tbody>
+        <tr>
+           <th>게시판 선택</th>
+          	<td>
+          		<select name="boardId">
+          			<option>게시판을 선택해주세요</option>
+          			<option value="1">공지</option>
+          			<option value="2">자유게시판</option>
+          		</select>
+          	</td>
+        </tr>
           <tr>
             <th>작성자</th>
             <td>${rq.loginedMember.nickname}</td>
